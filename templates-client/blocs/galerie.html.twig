@@ -1,0 +1,60 @@
+{# ─────────────────────────────────────────────────────────────────────────
+   GALERIE — les créations de l'atelier, en grille.
+
+   Propre à ce site. Le type s'appelle « galerie » parce que le fichier
+   s'appelle galerie.html.twig ; ses champs sont déclarés dans
+   cockpit/models/pages.model.php avec la condition data.type === 'galerie'.
+
+   Chaque vue porte son image, sa description et, facultativement, une
+   légende visible. La description reste obligatoire : l'administration
+   refuse l'enregistrement d'une image sans elle.
+   ───────────────────────────────────────────────────────────────────────── #}
+
+{# Largeur réellement occupée par une image, selon le nombre de colonnes :
+   c'est elle qui décide de la copie allégée que le navigateur télécharge. #}
+{% set largeurs = {
+    'deux':   '(min-width: 48rem) 28rem, 100vw',
+    'trois':  '(min-width: 62rem) 19rem, (min-width: 34rem) 45vw, 100vw',
+    'quatre': '(min-width: 62rem) 14rem, (min-width: 34rem) 45vw, 100vw'
+} %}
+
+{% set colonnes = bloc.colonnes|default('trois') %}
+
+<section class="bloc bloc-galerie">
+
+    {% if titre %}
+        <h{{ niveau }}>{{ titre }}</h{{ niveau }}>
+    {% endif %}
+
+    {% if bloc.introduction %}
+        <p class="bloc-galerie__introduction">{{ bloc.introduction }}</p>
+    {% endif %}
+
+    {% if bloc.images is not empty %}
+        <ul class="bloc-galerie__grille bloc-galerie__grille--{{ colonnes }}">
+            {% for vue in bloc.images %}
+                <li class="bloc-galerie__vue">
+                    <figure class="bloc-galerie__figure">
+
+                        {# Seule la toute première image d'une galerie placée en
+                           tête de page est chargée sans attendre : au-delà, la
+                           priorité irait à des images situées hors de l'écran. #}
+                        {% include 'partials/image.html.twig' with {
+                            asset: vue.image,
+                            alt: vue.alt,
+                            classe: 'bloc-galerie__image',
+                            sizes: largeurs[colonnes]|default('100vw'),
+                            eager: premier and loop.first
+                        } only %}
+
+                        {% if vue.legende %}
+                            <figcaption class="bloc-galerie__legende">{{ vue.legende }}</figcaption>
+                        {% endif %}
+
+                    </figure>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</section>

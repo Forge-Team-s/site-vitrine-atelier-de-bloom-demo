@@ -1,0 +1,70 @@
+{# ─────────────────────────────────────────────────────────────────────────
+   PRESTATIONS — ce que l'atelier propose, en cartes.
+
+   Propre à ce site. Champs déclarés dans cockpit/models/pages.model.php
+   avec la condition data.type === 'prestations'.
+
+   Le titre d'une carte se place un cran sous celui de la section : la
+   hiérarchie des titres est vérifiée par bin/verifier-accessibilite.php, et
+   un saut de niveau y est signalé. Sans titre de section, les cartes se
+   rangent directement sous le titre de la page.
+   ───────────────────────────────────────────────────────────────────────── #}
+
+{% set sousNiveau = titre ? niveau + 1 : 2 %}
+
+<section class="bloc bloc-prestations">
+
+    {% if titre %}
+        <h{{ niveau }}>{{ titre }}</h{{ niveau }}>
+    {% endif %}
+
+    {% if bloc.introduction %}
+        <p class="bloc-prestations__introduction">{{ bloc.introduction }}</p>
+    {% endif %}
+
+    {% if bloc.prestations is not empty %}
+        <ul class="prestations">
+            {% for prestation in bloc.prestations %}
+                <li class="prestation">
+
+                    {% if prestation.image %}
+                        {% include 'partials/image.html.twig' with {
+                            asset: prestation.image,
+                            alt: prestation.alt,
+                            classe: 'prestation__image',
+                            sizes: '(min-width: 62rem) 19rem, (min-width: 34rem) 45vw, 100vw'
+                        } only %}
+                    {% endif %}
+
+                    <div class="prestation__corps">
+
+                        <h{{ sousNiveau }} class="prestation__nom">{{ prestation.nom }}</h{{ sousNiveau }}>
+
+                        {% if prestation.resume %}
+                            <p class="prestation__resume">{{ prestation.resume }}</p>
+                        {% endif %}
+
+                        {% if prestation.prix %}
+                            {# Texte libre : « à partir de 28 € » se lit mieux qu'un
+                               nombre seul, et laisse la main sur la formulation. #}
+                            <p class="prestation__prix">{{ prestation.prix }}</p>
+                        {% endif %}
+
+                        {% if prestation.lienTexte and prestation.lien %}
+                            <p class="prestation__lien">
+                                {# L'intitulé reprend le nom de la prestation : hors
+                                   contexte, « En savoir plus » ne dit pas sur quoi. #}
+                                <a href="{{ prestation.lien }}">
+                                    {{ prestation.lienTexte }}<span class="prestation__lien-contexte"> — {{ prestation.nom }}</span>
+                                </a>
+                            </p>
+                        {% endif %}
+
+                    </div>
+
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+</section>

@@ -1,4 +1,4 @@
-/* Styles propres à ce site.
+/* Styles propres à ce site — Atelier de Bloom, fleuriste à Nantes.
    ─────────────────────────────────────────────────────────────────────────
    Écrire ici, jamais dans site.css : ce fichier n'est jamais modifié par une
    mise à jour, site.css l'est. Il est chargé après, donc il l'emporte.
@@ -19,3 +19,466 @@
 
    Après toute modification : php bin/purge-cache.php
    ───────────────────────────────────────────────────────────────────────── */
+
+/* ── Palette ──────────────────────────────────────────────────────────────
+   Les illustrations de l'atelier sont des aquarelles : crème, vert sauge et
+   rose poudré. Le fond du site reprend leur papier, pour qu'une image posée
+   dessus n'ait pas de bord visible.
+
+   Contrastes mesurés sur le fond crème (#fdfbf7) :
+     texte doux #4a5c52 → 6,9:1 · vert profond #2c5744 → 8,0:1
+   Le rose n'habille que des filets et des fonds : jamais du texte. */
+
+:root {
+    --couleur-fond: #fdfbf7;
+    --couleur-fond-doux: #f3efe4;
+    --couleur-trait: #ddd6c6;
+    --couleur-texte-doux: #4a5c52;
+
+    /* Propres à ce site. Le vert reprend celui de l'enseigne ; il double la
+       couleur de l'administration pour les éléments décoratifs, que les
+       couleurs saisies par le client n'ont pas à commander. */
+    --vert-profond: #2c5744;
+    --rose-poudre: #e8cfd2;
+    --sable: #ece5d6;
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+
+    --largeur: 64rem;
+}
+
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+}
+
+/* ── Titres ───────────────────────────────────────────────────────────── */
+
+h1,
+h2,
+h3,
+.bloc-hero__titre,
+.en-tete__nom {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+h1,
+.bloc-hero__titre {
+    font-size: 2.6rem;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+/* Un filet court sous les titres de section, comme la branche de l'emblème. */
+.bloc > h2::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 2px;
+    margin-top: 0.65rem;
+    background: var(--rose-poudre);
+}
+
+/* ── En-tête ──────────────────────────────────────────────────────────── */
+
+.en-tete {
+    border-bottom: 1px solid var(--couleur-trait);
+    padding-block: 2rem 1.5rem;
+    align-items: center;
+}
+
+.en-tete__nom {
+    font-size: 1.75rem;
+    font-weight: 400;
+}
+
+.en-tete__slogan {
+    font-size: 0.9375rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.menu__liste {
+    gap: 0.25rem 1.75rem;
+}
+
+.menu__liste a {
+    font-size: 0.9375rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--couleur-texte);
+}
+
+.menu__liste a:hover,
+.menu__liste a[aria-current="page"] {
+    border-bottom-color: var(--vert-profond);
+}
+
+/* ── Boutons ──────────────────────────────────────────────────────────── */
+
+.bouton {
+    padding: 0.7rem 1.6rem;
+    border-radius: 2rem;
+    font-size: 0.9375rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* Le survol du socle vire au magenta : il ne va pas avec cette enseigne. */
+.bouton:hover {
+    background: #1f4030;
+}
+
+/* Second bouton : même surface de clic, moins d'appel. Le trait et le texte
+   sont pleins — pas de transparence, qui dégraderait le contraste. */
+.bouton--discret {
+    background: var(--couleur-fond);
+    color: var(--vert-profond);
+    border: 1px solid var(--vert-profond);
+}
+
+.bouton--discret:hover {
+    background: var(--sable);
+    color: #1f4030;
+}
+
+/* ── Bandeau d'ouverture ──────────────────────────────────────────────────
+   Les illustrations de l'atelier sont presque carrées. Étirées sur toute la
+   largeur, elles perdent leur cadrage ; posées à côté du texte, elles gardent
+   leur format. Le gabarit livré n'est pas touché : seul le CSS change. */
+
+.bloc-hero {
+    display: grid;
+    gap: 1.5rem 3rem;
+    align-items: center;
+    margin-top: 2.5rem;
+}
+
+@media (min-width: 56rem) {
+
+    .bloc-hero {
+        grid-template-columns: 1fr minmax(0, 24rem);
+    }
+
+    /* Le texte passe devant l'image, qui le suit dans le HTML : l'ordre lu
+       reste celui du document, seul l'affichage change. */
+    .bloc-hero__texte {
+        order: -1;
+    }
+}
+
+.bloc-hero__image {
+    border-radius: 4px;
+    border: 1px solid var(--couleur-trait);
+    background: var(--couleur-fond-doux);
+}
+
+.bloc-hero__accroche {
+    font-size: 1.25rem;
+    line-height: 1.55;
+}
+
+/* ── Texte et image ───────────────────────────────────────────────────── */
+
+.bloc-texte-image__image {
+    border-radius: 4px;
+    border: 1px solid var(--couleur-trait);
+}
+
+/* ── Galerie ──────────────────────────────────────────────────────────── */
+
+.bloc-galerie__introduction,
+.bloc-prestations__introduction,
+.bloc-etapes__introduction {
+    max-width: 44rem;
+    color: var(--couleur-texte-doux);
+}
+
+.bloc-galerie__grille {
+    display: grid;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+}
+
+@media (min-width: 34rem) {
+    .bloc-galerie__grille {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 62rem) {
+
+    .bloc-galerie__grille--deux {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bloc-galerie__grille--trois {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .bloc-galerie__grille--quatre {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.bloc-galerie__figure {
+    margin: 0;
+    height: 100%;
+}
+
+/* Un cadrage commun donne une grille régulière malgré des images de formats
+   voisins mais pas identiques. Les dimensions restent écrites dans le HTML,
+   donc la page ne bouge pas pendant le chargement. */
+.bloc-galerie__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--couleur-trait);
+    background: var(--couleur-fond-doux);
+}
+
+.bloc-galerie__legende {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    color: var(--couleur-texte-doux);
+}
+
+/* ── Prestations ──────────────────────────────────────────────────────── */
+
+.prestations {
+    display: grid;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 0;
+}
+
+@media (min-width: 34rem) {
+    .prestations {
+        grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    }
+}
+
+.prestation {
+    display: flex;
+    flex-direction: column;
+    background: var(--couleur-fond);
+    border: 1px solid var(--couleur-trait);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.prestation__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: var(--couleur-fond-doux);
+}
+
+.prestation__corps {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.25rem 1.35rem 1.5rem;
+}
+
+.prestation__nom {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+}
+
+.prestation__resume {
+    margin: 0;
+    color: var(--couleur-texte-doux);
+}
+
+.prestation__prix {
+    margin: 0.85rem 0 0;
+    font-family: var(--serif);
+    font-size: 1.0625rem;
+    color: var(--vert-profond);
+}
+
+/* Poussé en bas de la carte : les liens s'alignent d'une carte à l'autre,
+   quelle que soit la longueur des descriptions. */
+.prestation__lien {
+    margin: 1.1rem 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--couleur-trait);
+    margin-top: auto;
+    font-size: 0.9375rem;
+}
+
+/* Le nom de la prestation complète l'intitulé pour qui parcourt la page lien
+   par lien. Il est masqué à l'œil, jamais aux lecteurs d'écran : « display:
+   none » l'aurait retiré des deux. */
+.prestation__lien-contexte {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* ── Étapes ───────────────────────────────────────────────────────────── */
+
+.etapes {
+    counter-reset: etape;
+    display: grid;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 0;
+}
+
+@media (min-width: 40rem) {
+    .etapes {
+        grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    }
+}
+
+.etape {
+    counter-increment: etape;
+    padding-top: 1rem;
+    border-top: 2px solid var(--rose-poudre);
+}
+
+/* Le numéro est dessiné ici, pas écrit dans le gabarit : la balise <ol> porte
+   déjà l'ordre, et un numéro en toutes lettres serait annoncé deux fois. */
+.etape::before {
+    content: counter(etape, decimal-leading-zero);
+    display: block;
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--vert-profond);
+}
+
+.etape__titre {
+    margin: 0.6rem 0 0.35rem;
+    font-size: 1.125rem;
+}
+
+.etape__texte {
+    margin: 0;
+    color: var(--couleur-texte-doux);
+}
+
+/* ── Invitation à commander ───────────────────────────────────────────── */
+
+.bloc-appel-action {
+    display: grid;
+    gap: 1.5rem 2.5rem;
+    align-items: center;
+    padding: 2rem 1.75rem;
+    background: var(--couleur-fond-doux);
+    border-radius: 6px;
+}
+
+@media (min-width: 48rem) {
+
+    .bloc-appel-action {
+        grid-template-columns: minmax(0, 18rem) 1fr;
+    }
+
+    .bloc-appel-action--sans-image {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bloc-appel-action__image {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--couleur-trait);
+}
+
+.bloc-appel-action__titre {
+    margin-top: 0;
+}
+
+/* Le filet des titres de section n'a pas sa place ici : le bandeau est déjà
+   détaché par son fond. */
+.bloc-appel-action__titre::after {
+    content: none;
+}
+
+.bloc-appel-action__texte > :first-child {
+    margin-top: 0;
+}
+
+.bloc-appel-action__boutons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0;
+}
+
+/* ── Témoignages ──────────────────────────────────────────────────────── */
+
+.temoignage {
+    background: var(--couleur-fond);
+    border: 1px solid var(--couleur-trait);
+    border-radius: 6px;
+}
+
+.temoignage blockquote p {
+    font-family: var(--serif);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+}
+
+.temoignage blockquote p::before {
+    content: "« ";
+}
+
+.temoignage blockquote p::after {
+    content: " »";
+}
+
+/* ── Coordonnées ──────────────────────────────────────────────────────── */
+
+.bloc-contact {
+    border: 1px solid var(--couleur-trait);
+}
+
+/* ── Actualités ───────────────────────────────────────────────────────── */
+
+.actualite-resume__image,
+.actualite__image {
+    border-radius: 4px;
+    border: 1px solid var(--couleur-trait);
+}
+
+/* ── Formulaire ───────────────────────────────────────────────────────── */
+
+.formulaire input[type="text"],
+.formulaire input[type="email"],
+.formulaire textarea {
+    border-radius: 4px;
+}
+
+/* ── Pied de page ─────────────────────────────────────────────────────── */
+
+.pied {
+    margin-top: 4rem;
+    border-top: 1px solid var(--couleur-trait);
+}
+
+.pied__titre {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.125rem;
+}
