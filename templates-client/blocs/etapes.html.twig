@@ -1,0 +1,38 @@
+{# ─────────────────────────────────────────────────────────────────────────
+   ÉTAPES — le déroulé d'une commande, dans l'ordre.
+
+   Propre à ce site. Champs déclarés dans cockpit/models/pages.model.php
+   avec la condition data.type === 'etapes'.
+
+   La liste est un <ol> : l'ordre est porté par la balise, donc annoncé par
+   les lecteurs d'écran. Le numéro affiché est dessiné par client.css avec un
+   compteur — écrit dans le texte, il serait lu deux fois.
+   ───────────────────────────────────────────────────────────────────────── #}
+
+{% set sousNiveau = titre ? niveau + 1 : 2 %}
+
+<section class="bloc bloc-etapes">
+
+    {% if titre %}
+        <h{{ niveau }}>{{ titre }}</h{{ niveau }}>
+    {% endif %}
+
+    {% if bloc.introduction %}
+        <p class="bloc-etapes__introduction">{{ bloc.introduction }}</p>
+    {% endif %}
+
+    {% if bloc.etapes is not empty %}
+        <ol class="etapes">
+            {% for etape in bloc.etapes %}
+                <li class="etape">
+                    <h{{ sousNiveau }} class="etape__titre">{{ etape.titre }}</h{{ sousNiveau }}>
+
+                    {% if etape.texte %}
+                        <p class="etape__texte">{{ etape.texte }}</p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+</section>

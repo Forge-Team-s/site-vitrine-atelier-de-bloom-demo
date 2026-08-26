@@ -3,6 +3,7 @@ CLAUDE.md
 SPEC.md
 /docs/planning/
 *.local.md
+.claude/settings.local.json
 
 # ─── Secrets / environnement ───
 .env
