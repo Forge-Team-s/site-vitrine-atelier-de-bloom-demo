@@ -4,6 +4,7 @@ SPEC.md
 /docs/planning/
 *.local.md
 .claude/settings.local.json
+/presentation-socle/
 
 # ─── Secrets / environnement ───
 .env
@@ -26,7 +27,9 @@ SPEC.md
 /public/assets/css/couleurs.css
 
 # ─── Médias envoyés depuis l'administration ───
-/public/media/
+# Le dossier est ignoré, mais sa règle d'accès est livrée avec le site.
+/public/medias/*
+!/public/medias/.htaccess
 
 # ─── Dépendances ───
 /vendor/

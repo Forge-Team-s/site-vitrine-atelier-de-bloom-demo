@@ -3,6 +3,28 @@
 Un site client est créé depuis le dépôt socle, puis vit dans son propre dépôt. Les corrections
 apportées au socle se récupèrent ensuite par fusion, site par site.
 
+## Versions du socle
+
+Chaque état publié du socle porte une étiquette Git — `v1.0.0`, `v1.1.0`, `v2.0.0` — et le
+fichier `VERSION`, à la racine, indique celle qui est installée. Ce que chaque version apporte
+est dans [CHANGELOG.md](../CHANGELOG.md).
+
+Le rang qui change annonce ce que la fusion va demander :
+
+| Rang | Exemple | Ce que le site doit faire |
+|---|---|---|
+| **MAJEUR** | `1.4.0` → `2.0.0` | une intervention manuelle — déplacer des fichiers, modifier `.env`, migrer des données. La marche à suivre est donnée sous la version dans le journal. |
+| **MINEUR** | `1.3.0` → `1.4.0` | rien de plus que la fusion |
+| **CORRECTIF** | `1.3.0` → `1.3.1` | rien de plus que la fusion |
+
+Lire le journal **avant** de fusionner un changement de rang majeur : l'intervention se prépare
+hors ligne, elle ne s'improvise pas sur un site en service. Chaque version majeure y décrit
+aussi le retour à la version précédente.
+
+Une étiquette ne se pose pas à chaque fusion sur le socle : plusieurs correctifs peuvent
+attendre la même. On en ajoute une quand il y a quelque chose qu'un site doit pouvoir
+reprendre — c'est l'étiquette, et non la branche, qui est l'unité livrée.
+
 ## 1. Créer le dépôt du site
 
 Sur GitHub, ouvrir le dépôt socle et cliquer **Use this template → Create a new repository**.
@@ -70,10 +92,16 @@ puis `git add` fichier par fichier avant de committer.
 Un ancêtre commun existe désormais : plus aucune option.
 
 ```bash
-git fetch socle
+git fetch socle --tags
 git checkout -b maj-socle
-git merge socle/main
+git merge v1.4.0
 ```
+
+Fusionner l'étiquette plutôt que `socle/main` : ce qui entre dans le site est alors un état
+publié et décrit dans le journal, et non l'avancement du moment. `VERSION` fait partie de la
+fusion, donc il porte le nouveau numéro sans qu'on ait à l'écrire.
+
+`git tag -l` après le `fetch` liste les versions disponibles.
 
 ## 5. Après chaque fusion
 
@@ -95,7 +123,7 @@ git push -u origin maj-socle
 | Fichiers | À la fusion |
 |---|---|
 | `templates-client/` | jamais — le socle n'y écrit pas |
-| `.env`, `var/`, `public/media/`, `public/admin/` | jamais — non versionnés |
+| `.env`, `var/`, `public/medias/`, `public/admin/` | jamais — non versionnés (sauf `public/medias/.htaccess`) |
 | `templates/`, `src/`, `public/assets/` | conflit s'ils ont été modifiés dans le site |
 
 Placer toute personnalisation dans `templates-client/` — voir
