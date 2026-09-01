@@ -122,3 +122,7 @@ comme trace de l'analyse.
 - Activer la double authentification sur le compte d'administration.
 - Renseigner `SITE_URL` avec le domaine réel, puis relancer le vérificateur : c'est le seul
   contrôle qui attrape une adresse revendiquée fausse.
+
+Poser le site sur un hébergement, et le tenir à jour ensuite, est décrit dans
+[deploiement.md](deploiement.md) : la voie du dépôt Git, celle du FTP quand l'hébergement ne
+laisse pas le choix, et le passage de la seconde à la première sans couper le service.
